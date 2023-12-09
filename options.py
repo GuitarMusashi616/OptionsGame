@@ -6,9 +6,10 @@ from matplotlib import pyplot as plt
 def binomial_price(option, bsm_process, steps):
     binomial_engine = ql.BinomialVanillaEngine(bsm_process, "crr", steps)
     option.setPricingEngine(binomial_engine)
-    return option.NPV()
+    # price = option.NPV()
+    return option
 
-def just_final_cost(american_option, bsm_process):
+def just_option_stats(american_option, bsm_process):
     return binomial_price(american_option, bsm_process, 200)
 
 def graph_option_cost(american_option, bsm_process):
@@ -21,7 +22,7 @@ def graph_option_cost(american_option, bsm_process):
     ax.set_xlabel("Steps", size=14)
     ax.set_ylabel("Price", size=14)
     ax.set_title("Binomial Tree Price For Varying Steps", size=14)
-    ax.legend();
+    ax.legend()
     return prices[-1]
 
 def option_price(
@@ -76,7 +77,7 @@ def option_price(
                                     flat_ts, 
                                     flat_vol_ts)
 
-    return just_final_cost(american_option, bsm_process)
+    return just_option_stats(american_option, bsm_process)
 
 
 if __name__ == "__main__":

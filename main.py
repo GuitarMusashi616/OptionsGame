@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 import yfinance
 import numpy as np
-
+from console import Game
 from options import option_price
 
 
@@ -16,7 +16,7 @@ def get_stock_data(symbol, window=252):
     return data
 
 
-def main():
+def test():
     tsla = get_stock_data('TSLA')
 
     # calculation date today
@@ -32,7 +32,10 @@ def main():
     print(dic)
 
 
-
+def main():
+    game = Game()
+    game.process("info")
+    game.play()
 
 if __name__ == "__main__":
     main()
