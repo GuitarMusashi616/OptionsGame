@@ -2,38 +2,19 @@ import datetime
 import pandas as pd
 import yfinance
 import numpy as np
-from console import Game
-from options import option_price
+from Game import Game
+from random import randint
 
-
-def get_stock_data(symbol, window=252):
-    data = yfinance.download(symbol)
-
-    returns = np.log(data['Adj Close'] / data['Adj Close'].shift(1))
-
-    data['Volatility'] = returns.rolling(window=window).std() * np.sqrt(252)
-
-    return data
-
-
-def test():
-    tsla = get_stock_data('TSLA')
-
-    # calculation date today
-    calculation_date = datetime.date.today()
-    # maturity date weekly
-    maturity_date = datetime.date(2023,12,8)
-
-    today = pd.Timestamp(calculation_date.year, calculation_date.month, calculation_date.day)
-    ts = tsla.loc[today]
-
-    dic = {i:option_price(calculation_date, maturity_date, ts['Adj Close'], i, ts['Volatility'], 0, True, 0.0434) for i in range(200, 255, 5)}
-    
-    print(dic)
-
+def get_random_starting_date(lower_bound = 180, upper_bound = 365) -> datetime.datetime:
+    starting_date = datetime.datetime.today() - datetime.timedelta(days=randint(lower_bound, upper_bound))
+    return starting_date.replace(hour=0, minute=0, second=0, microsecond=0)
 
 def main():
-    game = Game()
+    starting_cash = 10_000
+    starting_date = get_random_starting_date()
+
+    game = Game(starting_date, starting_cash)
+    # game = Game()
     game.process("info")
     game.play()
 
